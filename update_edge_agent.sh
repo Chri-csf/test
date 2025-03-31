@@ -1,6 +1,5 @@
-
 #!/bin/bash
-
+# teste de altercao arquivo
 source config.env
 # Variáveis
 EDGE_CONTAINER="portainer_edge_agent"
