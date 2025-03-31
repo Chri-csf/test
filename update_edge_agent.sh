@@ -1,18 +1,17 @@
-#!/bin/bash
 
-### TESTE02 @@@
+#!/bin/bash
 
 source config.env
 # Variáveis
 EDGE_CONTAINER="portainer_edge_agent"
 PORTAINER_AGENT_IMAGE="portainer/agent"
-export EDGE_ID="INFORMAR O EDGE_ID do Environment do cliente"
-export EDGE_KEY="INFORMAR O EDGE_KEY do Environment do cliente"
-
 EDGE_ID="${EDGE_ID:-}"
 EDGE_KEY="${EDGE_KEY:-}"
 EDGE_INSECURE_POLL="${EDGE_INSECURE_POLL:-1}"
 PORTAINER_AGENT_DATA_DIR="${PORTAINER_AGENT_DATA_DIR:-/opt/portainer/portainer_agent_data}"
+ENABLE_CLEANUP == "false"
+#ENABLE_CLEANUP == "true" # Caso queira a Limpeza de volumes e imagens não utilizadas, descomente esse comando. Anteção isso afeta todos os clientes, analise fria e calmamente antes de utilizar.
+
 
 # Obtem a versão a ser instalada no GitHub
 LATEST_VERSION_RAW=$(curl -s https://api.github.com/repos/Chri-csf/test/contents/portainer_edge_version?ref=main)
@@ -92,20 +91,20 @@ fi
 
 
 # Limpeza de volumes e imagens não utilizadas (controlada por variável de ambiente)
-#if [ "${ENABLE_CLEANUP}" == "true" ] || [ "${ENABLE_CLEANUP}" == "1" ]; then
-# echo "Iniciando limpeza de volumes e imagens não utilizadas..."
-# docker system prune -af --volumes
-# if [ $? -ne 0 ]; then
-#   echo "Erro ao limpar volumes não utilizados."
-# fi
-#  docker image prune -a -f
-# if [ $? -ne 0 ]; then
-#   echo "Erro ao limpar imagens não utilizadas."
-# fi
-#   echo "Limpeza de volumes e imagens não utilizadas concluída."
-#else
-#   echo "Limpeza automática de volumes e imagens não utilizada (variável ENABLE_CLEANUP não definida como 'true' ou '1')."
-#fi
+if [ "${ENABLE_CLEANUP}" == "true" ] || [ "${ENABLE_CLEANUP}" == "1" ]; then
+ echo "Iniciando limpeza de volumes e imagens não utilizadas..."
+ docker system prune -af --volumes
+ if [ $? -ne 0 ]; then
+   echo "Erro ao limpar volumes não utilizados."
+ fi
+  docker image prune -a -f
+ if [ $? -ne 0 ]; then
+   echo "Erro ao limpar imagens não utilizadas."
+ fi
+   echo "Limpeza de volumes e imagens não utilizadas concluída."
+else
+   echo "Limpeza automática de volumes e imagens não utilizada (variável ENABLE_CLEANUP não definida como 'true' ou '1')."
+fi
 
 
 echo "Script de atualização do Edge Agent finalizado."
