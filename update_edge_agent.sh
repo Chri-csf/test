@@ -8,9 +8,9 @@ EDGE_ID="${EDGE_ID:-}"
 EDGE_KEY="${EDGE_KEY:-}"
 EDGE_INSECURE_POLL="${EDGE_INSECURE_POLL:-1}"
 PORTAINER_AGENT_DATA_DIR="${PORTAINER_AGENT_DATA_DIR:-/opt/portainer/portainer_agent_data}"
-ENABLE_CLEANUP="false"
-#ENABLE_CLEANUP == "true" # Caso queira a Limpeza de volumes e imagens não utilizadas, descomente esse comando. Anteção isso afeta todos os clientes, analise fria e calmamente antes de utilizar.
-
+export ENABLE_CLEANUP="true"
+#ENABLE_CLEANUP="true" - Caso queira a Limpeza de volumes e imagens não utilizadas, descomente esse comando. Anteção isso afeta todos os clientes, analise fria e calmamente antes de utilizar.
+#               "false" - Caso nao queira limpeza    
 
 # Obtem a versão a ser instalada no GitHub
 LATEST_VERSION_RAW=$(curl -s https://api.github.com/repos/Chri-csf/test/contents/portainer_edge_version?ref=main)
